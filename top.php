@@ -1,12 +1,17 @@
 <?php
+
+    $tasklist = new mysqli('localhost','root','root','tasklist');
+    
+    
     if (isset($_POST['submit'])) {
         $task = $_POST['task'];
         $deadline = $_POST['deadline'];
         echo htmlspecialchars($task);
         echo htmlspecialchars($deadline);
+        $sql = "INSERT INTO task(name,deadline,done) values('".$task."',".$deadline.",0)";
+        $tasklist->query($sql);
     }
     
-    $tasklist = new mysqli('localhost','root','root','tasklist');
     $notDoneTasks = $tasklist->query('select * from task');
     
 ?>
@@ -22,13 +27,13 @@
         <input type="submit" name="submit">
     </form>
     <div>
-        <li>
+        <ul>
             <?php
                 while ($row = $notDoneTasks->fetch_assoc()) {
-                    echo '<ul>'.$row['name'].'</ul>';
+                    echo '<li>'.$row['name'].'</li>';
                 }
             ?>
-        </li>
+        </ul>
     </div>
 </body>
 </html>
