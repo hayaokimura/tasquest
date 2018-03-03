@@ -5,6 +5,10 @@
         echo htmlspecialchars($task);
         echo htmlspecialchars($deadline);
     }
+    
+    $tasklist = new mysqli('localhost','root','root','tasklist');
+    $notDoneTasks = $tasklist->query('select * from task');
+    
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,5 +21,17 @@
         <span>期限</span><input type="text" name="deadline">
         <input type="submit" name="submit">
     </form>
+    <div>
+        <li>
+            <?php
+                while ($row = $notDoneTasks->fetch_assoc()) {
+                    echo '<ul>'.$row['name'].'</ul>';
+                }
+            ?>
+        </li>
+    </div>
 </body>
 </html>
+<?php
+$mysqli->close();
+?>
